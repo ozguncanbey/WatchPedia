@@ -12,10 +12,11 @@ struct SearchScreen: View {
     @StateObject var viewModel = SearchViewModel()
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Search")
     }
 }
 
 #Preview {
     SearchScreen()
+        .preferredColorScheme(.dark)
 }

@@ -11,7 +11,8 @@ import SwiftUI
 struct WatchPediaApp: App {
     var body: some Scene {
         WindowGroup {
-            MoviesScreen()
+            MainView()
+                .preferredColorScheme(.dark)
         }
     }
 }
