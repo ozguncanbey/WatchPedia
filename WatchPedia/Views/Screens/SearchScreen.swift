@@ -9,10 +9,23 @@ import SwiftUI
 
 struct SearchScreen: View {
     
-    @StateObject var viewModel = SearchViewModel()
+    @StateObject private var viewModel = SearchViewModel()
+    @State private var searchTerm = ""
     
     var body: some View {
-        Text("Search")
+        NavigationStack {
+            ScrollView {
+                HStack {
+                    Text("Explore")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+            }
+        }
+        .searchable(text: $searchTerm, prompt: "Search movie or show")
     }
 }
 

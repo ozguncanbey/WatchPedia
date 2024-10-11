@@ -9,10 +9,48 @@ import SwiftUI
 
 struct ShowsScreen: View {
     
-    @StateObject var viewModel = ShowsViewModel()
+    @StateObject private var viewModel = ShowsViewModel()
     
     var body: some View {
-        Text("Shows")
+        NavigationStack {
+            ScrollView {
+                HStack {
+                    Text("Popular")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Text("Now Playing")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Text("Upcoming")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Text("Top Rated")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+            }
+        }
     }
 }
 

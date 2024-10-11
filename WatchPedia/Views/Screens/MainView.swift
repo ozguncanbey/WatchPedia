@@ -30,10 +30,10 @@ struct MainView: View {
                     Label("Watchlist", systemImage: "list.and.film")
                 }
         }
-        .padding()
         .onAppear {
             UITabBar.appearance().unselectedItemTintColor = .gray
         }
+        .padding()
     }
 }
 

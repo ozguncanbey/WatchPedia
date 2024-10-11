@@ -9,10 +9,11 @@ import SwiftUI
 
 struct WatchlistScreen: View {
     
-    @StateObject var viewModel = WatchlistViewModel()
+    @StateObject private var viewModel = WatchlistViewModel()
     
     var body: some View {
-        Text("Watchlist")
+        ContentUnavailableView("Your watchlist is empty", systemImage: "plus.circle", description: Text("Add content to see"))
+//            .offset(y: -60)
     }
 }
 

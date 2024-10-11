@@ -9,10 +9,48 @@ import SwiftUI
 
 struct MoviesScreen: View {
     
-    @StateObject var viewModel = MoviesViewModel()
+    @StateObject private var viewModel = MoviesViewModel()
     
     var body: some View {
-        Text("Movies")
+        NavigationStack {
+            ScrollView {
+                HStack {
+                    Text("Popular")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Text("Now Playing")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Text("Upcoming")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Text("Top Rated")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    Spacer()
+                }
+            }
+        }
     }
 }
 
