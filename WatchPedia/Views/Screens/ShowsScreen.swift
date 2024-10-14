@@ -24,7 +24,7 @@ struct ShowsScreen: View {
                 }
                 
                 HStack {
-                    Text("Now Playing")
+                    Text("Airing Today")
                         .font(.largeTitle)
                         .bold()
                         .padding()
@@ -33,7 +33,7 @@ struct ShowsScreen: View {
                 }
                 
                 HStack {
-                    Text("Upcoming")
+                    Text("On The Air")
                         .font(.largeTitle)
                         .bold()
                         .padding()
