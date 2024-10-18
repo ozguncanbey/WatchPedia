@@ -47,4 +47,10 @@ enum API_URLs {
     static func topRatedShows(page: Int) -> String {
         "\(baseURL)tv/popular?api_key=\(apikey)&language=en-US&page=\(page)"
     }
+    
+    // MARK: - OTHERS
+    
+    static func imageURL(posterPath: String) -> String {
+        "https://image.tmdb.org/t/p/w500\(posterPath)"
+    }
 }

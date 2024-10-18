@@ -14,42 +14,16 @@ struct MoviesScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                HStack {
-                    Text("Popular")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("Now Playing")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("Upcoming")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("Top Rated")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
+                VStack(alignment: .leading, spacing: 20) {
+                    ContentSection(title: "Popular", contents: viewModel.popularMovies)
+                    ContentSection(title: "Now Playing", contents: viewModel.nowPlayingMovies)
+                    ContentSection(title: "Upcoming", contents: viewModel.upcomingMovies)
+                    ContentSection(title: "Top Rated", contents: viewModel.topRatedMovies)
                 }
             }
+        }
+        .onAppear {
+            viewModel.getAllMovies()
         }
     }
 }

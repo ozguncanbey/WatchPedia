@@ -14,42 +14,16 @@ struct ShowsScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                HStack {
-                    Text("Popular")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("Airing Today")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("On The Air")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("Top Rated")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Spacer()
+                VStack(alignment: .leading, spacing: 20) {
+                    ContentSection(title: "Popular", contents: viewModel.popularShows)
+                    ContentSection(title: "Airing Today", contents: viewModel.airingTodayShows)
+                    ContentSection(title: "On The Air", contents: viewModel.onTheAirShows)
+                    ContentSection(title: "Top Rated", contents: viewModel.topRatedShows)
                 }
             }
+        }
+        .onAppear {
+            viewModel.getAllShows()
         }
     }
 }

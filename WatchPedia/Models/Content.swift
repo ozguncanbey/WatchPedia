@@ -19,7 +19,7 @@ struct Content: Codable {
     }
 }
 
-struct ContentResult: Codable, Hashable {
+struct ContentResult: Codable, Hashable, Identifiable {
     let id: Int?
     let overview: String?
     let posterPath, releaseDate, title: String?
