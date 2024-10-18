@@ -13,41 +13,27 @@ final class NetworkManager {
     private init() {}
     
     /// Generic download function with URLSession
-    func request<T: Decodable>(_ url: URL, method: HttpMethod, body: Data? = nil, completion: @escaping (Result<T, Error>) -> ()) {
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = body
+    func download(url: URL, completion: @escaping (Result<Data,NetworkErrors>) -> ()) {
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
-                completion(.failure(error))
+                print(error.localizedDescription)
+                completion(.failure(.error))
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                completion(.failure(URLError(.badServerResponse)))
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.responseError))
                 return
             }
             
             guard let data = data else {
-                completion(.failure(URLError(.badURL)))
+                completion(.failure(.dataError))
                 return
             }
             
-            do {
-                let decodedData = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(decodedData))
-            } catch {
-                print("1")
-                completion(.failure(error))
-            }
+            completion(.success(data))
         }
         .resume()
     }
-}
-
-enum HttpMethod: String {
-    case GET
-    case POST
 }

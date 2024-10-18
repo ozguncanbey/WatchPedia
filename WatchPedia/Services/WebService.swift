@@ -14,13 +14,14 @@ final class WebService {
     func downloadPopularMovies(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.popularMovies(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }
@@ -28,13 +29,14 @@ final class WebService {
     func downloadNowPlayingMovies(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.nowPlayingMovies(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }
@@ -42,13 +44,14 @@ final class WebService {
     func downloadUpcomingMovies(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.upcomingMovies(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }
@@ -56,13 +59,14 @@ final class WebService {
     func downloadTopRatedMovies(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.topRatedMovies(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }
@@ -72,13 +76,14 @@ final class WebService {
     func downloadPopularShows(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.popularShows(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }
@@ -86,13 +91,14 @@ final class WebService {
     func downloadAiringTodayShows(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.airingTodayShows(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }
@@ -100,13 +106,14 @@ final class WebService {
     func downloadOnTheAirShows(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.onTheAirShows(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }
@@ -114,13 +121,14 @@ final class WebService {
     func downloadTopRatedShows(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.topRatedShows(page: 1)) else { return }
         
-        NetworkManager.shared.request(url, method: .GET) { (result: Result<Content, Error>) in
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let content):
-                completion(content.results)
+            case .success(let data):
+                completion(handleWithData(data))
             case .failure(let error):
-                print(error.localizedDescription)
-                completion(nil)
+                handleWithError(error)
             }
         }
     }

@@ -34,31 +34,16 @@ struct PosterView: View {
     }
     
     private func downloadImage() {
-        guard let posterPath = content.posterPath,
-              let url = URL(string: API_URLs.imageURL(posterPath: posterPath)) else {
-            return
-        }
+        guard let url = URL(string: API_URLs.imageURL(posterPath: content.posterPath ?? "")) else { return }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error downloading image: \(error.localizedDescription)")
-                return
-            }
+        NetworkManager.shared.download(url: url) { [self] result in
             
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
-                print("Invalid response status code")
-                return
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async { self.posterImage = UIImage(data: data) }
+            case .failure(_):
+                break
             }
-            
-            guard let data = data, let image = UIImage(data: data) else {
-                print("Invalid image data")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.posterImage = image
-            }
-        }.resume()
+        }
     }
 }

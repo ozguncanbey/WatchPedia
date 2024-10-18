@@ -1,8 +1,8 @@
 //
 //  API_URLs.swift
-//  HappyBirthDays
+//  WatchPedia
 //
-//  Created by Özgün Can Beydili on 28.06.2024.
+//  Created by Özgün Can Beydili on 11.10.2024.
 //
 
 import Foundation
@@ -45,7 +45,7 @@ enum API_URLs {
     }
     
     static func topRatedShows(page: Int) -> String {
-        "\(baseURL)tv/popular?api_key=\(apikey)&language=en-US&page=\(page)"
+        "\(baseURL)tv/top_rated?api_key=\(apikey)&language=en-US&page=\(page)"
     }
     
     // MARK: - OTHERS
