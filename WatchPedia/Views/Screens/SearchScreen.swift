@@ -28,7 +28,7 @@ struct SearchScreen: View {
                     
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(viewModel.allTrendings) { content in
-//                            PosterView(content: content)
+                            PosterView(content: .trendingResult(content))
                         }
                     }
                     .padding(.horizontal)

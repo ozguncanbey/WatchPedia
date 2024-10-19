@@ -41,7 +41,7 @@ struct TrendingsResult: Codable, Identifiable {
     }
 }
 
-struct KnownFor: Codable {
+struct KnownFor: Codable, Identifiable {
     let backdropPath: String?
     let id: Int?
     let title, originalTitle, overview, posterPath: String?

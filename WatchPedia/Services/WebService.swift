@@ -134,7 +134,7 @@ final class WebService {
     }
     
     // MARK: - SEARCH
-    func downloadAllTrendings(completion: @escaping ([TrendingsResult]?) -> ()) {
+    func downloadAllTrendings(completion: @escaping ([KnownFor]?) -> ()) {
         guard let url = URL(string: API_URLs.allTrendings()) else { return }
         
         NetworkManager.shared.download(url: url) { [weak self] result in
@@ -165,12 +165,14 @@ final class WebService {
         }
     }
     
-    private func handleWithData(_ data: Data) -> [TrendingsResult]? {
+    private func handleWithData(_ data: Data) -> [KnownFor]? {
         do {
             let trendings = try JSONDecoder().decode(Trendings.self, from: data)
-            return trendings.results
+            let allKnownFor = trendings.results?.compactMap { $0.knownFor }.flatMap { $0 }
+            
+            return allKnownFor
         } catch {
-            print(error.localizedDescription)
+            print("Decoding error: \(error.localizedDescription)")
             return nil
         }
     }
