@@ -33,7 +33,6 @@ struct MainView: View {
         .onAppear {
             UITabBar.appearance().unselectedItemTintColor = .gray
         }
-        .padding(.top)
     }
 }
 

@@ -133,6 +133,22 @@ final class WebService {
         }
     }
     
+    // MARK: - SEARCH
+    func downloadAllTrendings(completion: @escaping ([TrendingsResult]?) -> ()) {
+        guard let url = URL(string: API_URLs.allTrendings()) else { return }
+        
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                completion(handleWithData(data))
+            case .failure(let error):
+                handleWithError(error)
+            }
+        }
+    }
+    
     // When error occurs
     private func handleWithError(_ error: Error) {
         print(error.localizedDescription)
@@ -143,6 +159,16 @@ final class WebService {
         do {
             let content = try JSONDecoder().decode(Content.self, from: data)
             return content.results
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    private func handleWithData(_ data: Data) -> [TrendingsResult]? {
+        do {
+            let trendings = try JSONDecoder().decode(Trendings.self, from: data)
+            return trendings.results
         } catch {
             print(error.localizedDescription)
             return nil

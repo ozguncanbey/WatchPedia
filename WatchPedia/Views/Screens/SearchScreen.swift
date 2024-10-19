@@ -12,20 +12,30 @@ struct SearchScreen: View {
     @StateObject private var viewModel = SearchViewModel()
     @State private var searchTerm = ""
     
+    private let columns: [GridItem] = [
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
+    ]
+    
     var body: some View {
         NavigationStack {
             ScrollView {
-                HStack {
+                VStack(alignment: .leading) {
                     Text("Explore")
                         .font(.largeTitle)
                         .bold()
                         .padding()
                     
-                    Spacer()
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(viewModel.allTrendings) { content in
+//                            PosterView(content: content)
+                        }
+                    }
+                    .padding(.horizontal)
                 }
             }
+            .searchable(text: $searchTerm, prompt: "Search movie or show")
         }
-        .searchable(text: $searchTerm, prompt: "Search movie or show")
     }
 }
 

@@ -48,6 +48,16 @@ enum API_URLs {
         "\(baseURL)tv/top_rated?api_key=\(apikey)&language=en-US&page=\(page)"
     }
     
+    // MARK: - SEARCH
+    
+    static func allTrendings() -> String {
+        "\(baseURL)trending/all/day?api_key=\(apikey)"
+    }
+    
+    static func multiSearch(query: String) -> String {
+        return "\(baseURL)search/multi?api_key=\(apikey)&language=en-US&query=\(query)&page=1&include_adult=false"
+    }
+    
     // MARK: - OTHERS
     
     static func imageURL(posterPath: String) -> String {
