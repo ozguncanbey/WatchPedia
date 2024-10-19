@@ -7,22 +7,8 @@
 
 import SwiftUI
 
-enum PosterContent {
-    case contentResult(ContentResult)
-    case trendingResult(KnownFor)
-    
-    var posterPath: String? {
-        switch self {
-        case .contentResult(let content):
-            return content.posterPath
-        case .trendingResult(let trending):
-            return trending.posterPath
-        }
-    }
-}
-
 struct PosterView: View {
-    let content: PosterContent
+    let content: AllResults
     @State private var posterImage: UIImage?
     
     var body: some View {

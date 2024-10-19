@@ -34,3 +34,9 @@ struct ContentResult: Codable, Hashable, Identifiable {
         case voteAverage = "vote_average"
     }
 }
+
+extension ContentResult {
+    static var dummy: ContentResult {
+        .init(id: 0, overview: "Overview", posterPath: "", releaseDate: "12/12/!2", title: "Title", voteAverage: 10)
+    }
+}
