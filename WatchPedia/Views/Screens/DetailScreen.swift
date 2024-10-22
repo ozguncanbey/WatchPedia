@@ -14,7 +14,31 @@ struct DetailScreen: View {
     let content: ContentResult
     
     var body: some View {
-        Text(content.title ?? "No Title")
+        NavigationStack {
+            ScrollView {
+                HStack {
+                    PosterView(content: content)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text(content.title ?? "No Title")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding()
+                        
+                        Label(content.releaseDate ?? "", systemImage: "calendar")
+                            .fontWeight(.light)
+                        
+//                        Spacer()
+                    }
+                    
+                    Spacer()
+                }
+            }
+        }
+        .navigationTitle(content.title ?? "No title")
     }
 }
 
