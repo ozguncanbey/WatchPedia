@@ -37,6 +37,6 @@ struct ContentResult: Codable, Hashable, Identifiable {
 
 extension ContentResult {
     static var dummy: ContentResult {
-        .init(id: 0, overview: "Overview", posterPath: "", releaseDate: "12/12/!2", title: "Title", voteAverage: 10)
+        .init(id: 0, overview: "Overview", posterPath: "pp", releaseDate: "12/12/!2", title: "Title", voteAverage: 10)
     }
 }

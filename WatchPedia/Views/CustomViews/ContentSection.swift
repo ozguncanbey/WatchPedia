@@ -17,7 +17,9 @@ func ContentSection(title: String, contents: [ContentResult]) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 15) {
                 ForEach(contents) { content in
-                    PosterView(content: .contentResult(content))
+                    NavigationLink(destination: DetailScreen(content: content)) {
+                        PosterView(content: content)
+                    }
                 }
             }
             .padding(.horizontal)

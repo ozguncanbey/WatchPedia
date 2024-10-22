@@ -11,7 +11,7 @@ final class SearchViewModel: ObservableObject {
     
     private let service = WebService()
     
-    @Published var allTrendings: [KnownFor] = []
+    @Published var allTrendings: [ContentResult] = []
     
     init() { getAllTrendings() }
     

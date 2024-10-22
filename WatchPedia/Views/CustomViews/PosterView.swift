@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PosterView: View {
-    let content: AllResults
+    let content: ContentResult
     @State private var posterImage: UIImage?
     
     var body: some View {
@@ -22,7 +22,7 @@ struct PosterView: View {
                     .padding(.trailing)
             } else {
                 Rectangle()
-                    .fill(Color.gray.opacity(0.3))
+                    .fill(.gray.opacity(0.3))
                     .frame(width: .dWidth / 2.5, height: .dHeight / 3.75)
                     .cornerRadius(16)
                     .padding(.trailing)

@@ -11,14 +11,14 @@ struct DetailScreen: View {
     
     @StateObject private var viewModel = DetailViewModel()
     
-    let content: AllResults
+    let content: ContentResult
     
     var body: some View {
-        Text("Detail")
+        Text(content.title ?? "No Title")
     }
 }
 
 #Preview {
-    DetailScreen(content: .contentResult(.dummy))
+    DetailScreen(content: .dummy)
         .preferredColorScheme(.dark)
 }
