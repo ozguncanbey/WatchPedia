@@ -24,18 +24,16 @@ struct DetailScreen: View {
                     PosterView(content: content)
                         .padding()
                     
-                    Spacer()
-                    
                     VStack {
                         Text(content.isMovie ? viewModel.contentDetail?.title ?? "No Title" : viewModel.contentDetail?.name ?? "No Name")
                             .font(.title)
                             .fontWeight(.bold)
                             .padding()
                         
-                        Label(viewModel.contentDetail?.releaseDate ?? "", systemImage: "calendar")
+                        Label((content.isMovie ? viewModel.contentDetail?.releaseDateString : viewModel.contentDetail?.startEndDate) ?? "", systemImage: "calendar")
                             .fontWeight(.light)
                         
-//                        Spacer()
+                        Spacer()
                     }
                     
                     Spacer()
@@ -43,6 +41,11 @@ struct DetailScreen: View {
             }
         }
         .navigationTitle(content.isMovie ? viewModel.contentDetail?.title ?? "No Title" : viewModel.contentDetail?.name ?? "No Name")
+        .navigationBarItems(trailing:
+        Button(action: {
+            
+        }) { Image(systemName: "film.circle") }
+        )
     }
 }
 
