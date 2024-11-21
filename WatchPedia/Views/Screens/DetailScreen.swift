@@ -10,13 +10,11 @@ import SwiftUI
 struct DetailScreen: View {
     
     @StateObject private var viewModel: DetailViewModel
-    
     let content: ContentResult
     
     init(content: ContentResult) {
         self.content = content
-        _viewModel = StateObject(wrappedValue: DetailViewModel(contentId: content.id ?? 0,
-                                                               isMovie: content.isMovie))
+        _viewModel = StateObject(wrappedValue: DetailViewModel(contentId: content.id ?? 0, isMovie: content.isMovie))
     }
     
     var body: some View {
@@ -29,12 +27,12 @@ struct DetailScreen: View {
                     Spacer()
                     
                     VStack {
-                        Text(content.title ?? "No Title")
+                        Text(content.isMovie ? viewModel.contentDetail?.title ?? "No Title" : viewModel.contentDetail?.name ?? "No Name")
                             .font(.title)
                             .fontWeight(.bold)
                             .padding()
                         
-                        Label(content.releaseDate ?? "", systemImage: "calendar")
+                        Label(viewModel.contentDetail?.releaseDate ?? "", systemImage: "calendar")
                             .fontWeight(.light)
                         
 //                        Spacer()
@@ -44,7 +42,7 @@ struct DetailScreen: View {
                 }
             }
         }
-        .navigationTitle(content.title ?? "No title")
+        .navigationTitle(content.isMovie ? viewModel.contentDetail?.title ?? "No Title" : viewModel.contentDetail?.name ?? "No Name")
     }
 }
 

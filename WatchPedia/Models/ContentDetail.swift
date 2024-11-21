@@ -50,3 +50,9 @@ struct Genre: Codable {
     let id: Int?
     let name: String?
 }
+
+extension ContentDetail {
+    static var dummy: ContentDetail {
+        .init(adult: false, backdropPath: "", budget: 100, genres: [], homepage: "", id: 0, imdbID: "", originCountry: [], originalLanguage: "", originalTitle: "", overview: "Overview", popularity: 1, posterPath: "", releaseDate: "12/12/12", revenue: 0, runtime: 150, status: "", tagline: "", title: "Tite", name: "Name", video: true, voteAverage: 0, voteCount: 0)
+    }
+}
