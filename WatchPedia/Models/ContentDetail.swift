@@ -22,7 +22,7 @@ struct ContentDetail: Codable {
     let posterPath: String?
     let releaseDate: String?
     let revenue, runtime: Int?
-    let status, tagline, title: String?
+    let status, tagline, title, name: String?
     let video: Bool?
     let voteAverage: Double?
     let voteCount: Int?
@@ -39,7 +39,7 @@ struct ContentDetail: Codable {
         case posterPath = "poster_path"
         case releaseDate = "release_date"
         case revenue, runtime
-        case status, tagline, title, video
+        case status, tagline, title, video, name
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
     }

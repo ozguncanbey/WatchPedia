@@ -9,9 +9,15 @@ import SwiftUI
 
 struct DetailScreen: View {
     
-    @StateObject private var viewModel = DetailViewModel()
+    @StateObject private var viewModel: DetailViewModel
     
     let content: ContentResult
+    
+    init(content: ContentResult) {
+        self.content = content
+        _viewModel = StateObject(wrappedValue: DetailViewModel(contentId: content.id ?? 0,
+                                                               isMovie: content.isMovie))
+    }
     
     var body: some View {
         NavigationStack {

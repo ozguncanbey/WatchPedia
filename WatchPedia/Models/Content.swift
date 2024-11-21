@@ -22,7 +22,7 @@ struct Content: Codable {
 struct ContentResult: Codable, Hashable, Identifiable {
     let id: Int?
     let overview: String?
-    let posterPath, releaseDate, title: String?
+    let posterPath, releaseDate, title, name: String?
     let voteAverage: Double?
 
     enum CodingKeys: String, CodingKey {
@@ -30,13 +30,17 @@ struct ContentResult: Codable, Hashable, Identifiable {
         case overview
         case posterPath = "poster_path"
         case releaseDate = "release_date"
-        case title
+        case title, name
         case voteAverage = "vote_average"
+    }
+    
+    var isMovie: Bool {
+        title != nil && name == nil
     }
 }
 
 extension ContentResult {
     static var dummy: ContentResult {
-        .init(id: 0, overview: "Overview", posterPath: "pp", releaseDate: "12/12/!2", title: "Title", voteAverage: 10)
+        .init(id: 0, overview: "Overview", posterPath: "pp", releaseDate: "12/12/!2", title: "Title", name: "Name", voteAverage: 10)
     }
 }

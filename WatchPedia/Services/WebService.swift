@@ -71,6 +71,21 @@ final class WebService {
         }
     }
     
+    func downloadMovieDetail(id: Int, completion: @escaping (ContentDetail?) -> ()) {
+        guard let url = URL(string: API_URLs.movieDetail(id: id)) else { return }
+        
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                completion(handleWithData(data))
+            case .failure(let error):
+                handleWithError(error)
+            }
+        }
+    }
+    
     // MARK: - SHOWS
     
     func downloadPopularShows(completion: @escaping ([ContentResult]?) -> ()) {
@@ -133,6 +148,21 @@ final class WebService {
         }
     }
     
+    func downloadShowDetail(id: Int, completion: @escaping (ContentDetail?) -> ()) {
+        guard let url = URL(string: API_URLs.showDetail(id: id)) else { return }
+        
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                completion(handleWithData(data))
+            case .failure(let error):
+                handleWithError(error)
+            }
+        }
+    }
+    
     // MARK: - SEARCH
     func downloadAllTrendings(completion: @escaping ([ContentResult]?) -> ()) {
         guard let url = URL(string: API_URLs.allTrendings()) else { return }
@@ -159,6 +189,16 @@ final class WebService {
         do {
             let content = try JSONDecoder().decode(Content.self, from: data)
             return content.results
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    private func handleWithData(_ data: Data) -> ContentDetail? {
+        do {
+            let content = try JSONDecoder().decode(ContentDetail.self, from: data)
+            return content
         } catch {
             print(error.localizedDescription)
             return nil
