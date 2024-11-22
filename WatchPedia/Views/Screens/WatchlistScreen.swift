@@ -42,6 +42,9 @@ struct WatchlistScreen: View {
         .onAppear {
             viewModel.getWatchlistedContents()
         }
+        .refreshable {
+            viewModel.getWatchlistedContents()
+        }
     }
 }
 

@@ -15,8 +15,4 @@ final class WatchlistViewModel: ObservableObject {
     func getWatchlistedContents() {
         watchlistedContents = userDefault.getWatchlisteds()
     }
-    
-//    func removeWatchlistedContent(_ content: ) {
-//        
-//    }
 }
