@@ -86,8 +86,8 @@ enum API_URLs {
         "\(baseURL)trending/all/day?api_key=\(api_key)"
     }
     
-    static func multiSearch(query: String) -> String {
-        return "\(baseURL)search/multi?api_key=\(api_key)&language=en-US&query=\(query)&page=1&include_adult=false"
+    static func multiSearch(query: String, page: Int) -> String {
+        return "\(baseURL)search/multi?api_key=\(api_key)&language=en-US&query=\(query)&page=\(page)&include_adult=false"
     }
     
     // MARK: - IMAGE

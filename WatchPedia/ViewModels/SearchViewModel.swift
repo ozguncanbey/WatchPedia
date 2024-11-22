@@ -11,7 +11,8 @@ final class SearchViewModel: ObservableObject {
     
     private let service = WebService()
     
-    @Published var allTrendings: [ContentResult] = []
+    @Published var allTrendings: [ContentResult]? = []
+    @Published var multiSearched: [ContentResult]? = []
     
     init() { getAllTrendings() }
     
@@ -22,6 +23,17 @@ final class SearchViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.allTrendings = result
+            }
+        }
+    }
+    
+    func getMultiSearched(query: String) {
+        service.downloadMultiSearch(query: query) { [weak self] result in
+            guard let self = self else { return }
+            guard let result = result else { return }
+            
+            DispatchQueue.main.async {
+                self.multiSearched = result
             }
         }
     }

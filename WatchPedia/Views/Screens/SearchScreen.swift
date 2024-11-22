@@ -20,23 +20,51 @@ struct SearchScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading) {
-                    Text("Explore")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    LazyVGrid(columns: columns, spacing: 16) {
-                        ForEach(viewModel.allTrendings) { content in
-                            NavigationLink(destination: DetailScreen(content: content)) {
-                                PosterView(content: content)
+                if let multiSearched = viewModel.multiSearched, !multiSearched.isEmpty {
+                    VStack(alignment: .leading) {
+                        Text("Results")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            ForEach(multiSearched) { content in
+                                NavigationLink(destination: DetailScreen(content: content)) {
+                                    PosterView(content: content)
+                                }
                             }
                         }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
+                } else {
+                    VStack(alignment: .leading) {
+                        Text("Explore")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            if let allTrendings = viewModel.allTrendings {
+                                ForEach(allTrendings) { content in
+                                    NavigationLink(destination: DetailScreen(content: content)) {
+                                        PosterView(content: content)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
                 }
             }
             .searchable(text: $searchTerm, prompt: "Search movie or show")
+            .onSubmit(of: .search) {
+                viewModel.getMultiSearched(query: searchTerm)
+            }
+            .onChange(of: searchTerm) { oldValue, newValue in
+                if newValue.isEmpty {
+                    viewModel.multiSearched?.removeAll()
+                }
+            }
         }
     }
 }
