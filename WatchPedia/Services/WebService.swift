@@ -101,6 +101,36 @@ final class WebService {
         }
     }
     
+    func downloadSimilerMovies(id: Int, completion: @escaping ([ContentResult]?) -> ()) {
+        guard let url = URL(string: API_URLs.similarMovies(id: id, page: 1)) else { return }
+        
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                completion(handleWithData(data))
+            case .failure(let error):
+                handleWithError(error)
+            }
+        }
+    }
+    
+    func downloadMovieCast(id: Int, completion: @escaping ([Cast]?) -> ()) {
+        guard let url = URL(string: API_URLs.movieCast(id: id)) else { return }
+        
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                completion(handleWithData(data))
+            case .failure(let error):
+                handleWithError(error)
+            }
+        }
+    }
+    
     // MARK: - SHOWS
     
     func downloadPopularShows(completion: @escaping ([ContentResult]?) -> ()) {
@@ -193,6 +223,36 @@ final class WebService {
         }
     }
     
+    func downloadSimilerShows(id: Int, completion: @escaping ([ContentResult]?) -> ()) {
+        guard let url = URL(string: API_URLs.similarShows(id: id, page: 1)) else { return }
+        
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                completion(handleWithData(data))
+            case .failure(let error):
+                handleWithError(error)
+            }
+        }
+    }
+    
+    func downloadShowCast(id: Int, completion: @escaping ([Cast]?) -> ()) {
+        guard let url = URL(string: API_URLs.showCast(id: id)) else { return }
+        
+        NetworkManager.shared.download(url: url) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                completion(handleWithData(data))
+            case .failure(let error):
+                handleWithError(error)
+            }
+        }
+    }
+    
     // MARK: - SEARCH
     
     func downloadAllTrendings(completion: @escaping ([ContentResult]?) -> ()) {
@@ -240,6 +300,16 @@ final class WebService {
         do {
             let video = try JSONDecoder().decode(Video.self, from: data)
             return video.results
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    private func handleWithData(_ data: Data) -> [Cast]? {
+        do {
+            let cast = try JSONDecoder().decode(Credits.self, from: data)
+            return cast.cast
         } catch {
             print(error.localizedDescription)
             return nil

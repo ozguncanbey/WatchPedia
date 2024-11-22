@@ -38,6 +38,14 @@ enum API_URLs {
         return "\(baseURL)movie/\(id)/videos?api_key=\(api_key)&language=en-US"
     }
         
+    static func similarMovies(id: Int, page: Int) -> String {
+        "\(baseURL)movie/\(id)/similar?api_key=\(api_key)&language=en-US&page=\(page)"
+    }
+    
+    static func movieCast(id: Int) -> String {
+        return "\(baseURL)movie/\(id)/credits?api_key=\(api_key)"
+    }
+    
     // MARK: - SHOWS
     
     static func popularShows(page: Int) -> String {
@@ -64,6 +72,14 @@ enum API_URLs {
         return "\(baseURL)tv/\(id)/videos?api_key=\(api_key)&language=en-US"
     }
     
+    static func similarShows(id: Int, page: Int) -> String {
+        "\(baseURL)tv/\(id)/similar?api_key=\(api_key)&language=en-US&page=\(page)"
+    }
+    
+    static func showCast(id: Int) -> String {
+        return "\(baseURL)tv/\(id)/credits?api_key=\(api_key)"
+    }
+    
     // MARK: - SEARCH
     
     static func allTrendings() -> String {
@@ -74,7 +90,7 @@ enum API_URLs {
         return "\(baseURL)search/multi?api_key=\(api_key)&language=en-US&query=\(query)&page=1&include_adult=false"
     }
     
-    // MARK: - OTHERS
+    // MARK: - IMAGE
     
     static func imageURL(posterPath: String) -> String {
         "https://image.tmdb.org/t/p/w500\(posterPath)"

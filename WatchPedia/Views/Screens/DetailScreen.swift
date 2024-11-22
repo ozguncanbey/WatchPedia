@@ -103,6 +103,25 @@ struct DetailScreen: View {
                         }
                         
                     }
+                    
+                    if let contentCast = viewModel.contentCast {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Cast")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                            
+                            CastSection(castList: contentCast)
+                        }
+                    }
+                    
+                    if let similarContents = viewModel.similarContents {
+                        Text(content.isMovie ? "Similar Movies" : "Similar Shows")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.horizontal)
+                        ContentSection(title: "", contents: similarContents)
+                    }
                 }
                 .padding(.bottom)
             }
