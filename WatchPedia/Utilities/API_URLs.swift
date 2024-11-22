@@ -34,6 +34,10 @@ enum API_URLs {
         "\(baseURL)movie/\(id)?api_key=\(api_key)"
     }
     
+    static func movieVideo(id: Int) -> String {
+        return "\(baseURL)movie/\(id)/videos?api_key=\(api_key)&language=en-US"
+    }
+        
     // MARK: - SHOWS
     
     static func popularShows(page: Int) -> String {
@@ -54,6 +58,10 @@ enum API_URLs {
     
     static func showDetail(id: Int) -> String {
         "\(baseURL)tv/\(id)?api_key=\(api_key)"
+    }
+    
+    static func showVideo(id: Int) -> String {
+        return "\(baseURL)tv/\(id)/videos?api_key=\(api_key)&language=en-US"
     }
     
     // MARK: - SEARCH

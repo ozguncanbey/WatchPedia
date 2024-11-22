@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct DetailScreen: View {
-    
     @StateObject private var viewModel: DetailViewModel
+    @State private var isInWatchlist = false
     let content: ContentResult
     
     init(content: ContentResult) {
@@ -20,32 +20,118 @@ struct DetailScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                HStack {
-                    PosterView(content: content)
-                        .padding()
+                VStack(alignment: .leading, spacing: 20) {
                     
-                    VStack {
-                        Text(content.isMovie ? viewModel.contentDetail?.title ?? "No Title" : viewModel.contentDetail?.name ?? "No Name")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .padding()
+                    HStack(alignment: .top, spacing: 15) {
+                        PosterView(content: content)
+                            .shadow(radius: 5)
                         
-                        Label((content.isMovie ? viewModel.contentDetail?.releaseDateString : viewModel.contentDetail?.startEndDate) ?? "", systemImage: "calendar")
-                            .fontWeight(.light)
-                        
-                        Spacer()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text(viewModel.contentDetail?.displayTitle ?? "")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .lineLimit(2)
+                            
+                            HStack(spacing: 15) {
+                                if let rating = viewModel.contentDetail?.rating {
+                                    Label(rating, systemImage: "star.fill")
+                                        .foregroundColor(.yellow)
+                                }
+                                
+                                Label(viewModel.contentDetail?.runtimeString ?? "",
+                                      systemImage: "clock")
+                            }
+                            .font(.subheadline)
+                            
+                            Label(viewModel.contentDetail?.displayDate ?? "",
+                                  systemImage: "calendar")
+                            .font(.subheadline)
+                            
+                            if !content.isMovie {
+                                Label(viewModel.contentDetail?.season ?? "",
+                                      systemImage: "tv")
+                                .font(.subheadline)
+                            }
+                            
+                            Text(viewModel.contentDetail?.genresString ?? "")
+                                .font(.caption)
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 8)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(5)
+                        }
                     }
+                    .padding()
                     
-                    Spacer()
+                    // Overview
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Overview")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                        
+                        Text(viewModel.contentDetail?.overview ?? "")
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                            .lineSpacing(4)
+                    }
+                    .padding(.horizontal)
+                    
+                    if let videos = viewModel.contentVideoResult, !videos.isEmpty {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Videos")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .padding(.horizontal)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 15) {
+                                    ForEach(videos, id: \.key) { video in
+                                        if video.type?.lowercased() == "trailer" {
+                                            VStack(alignment: .leading) {
+                                                TrailerView(videoKey: video.key ?? "")
+                                                    .frame(width: 280)
+                                                
+                                                Text("Trailer")
+                                                    .font(.caption)
+                                                    .foregroundColor(.secondary)
+                                            }
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal)
+                            }
+                        }
+                        
+                    }
+                }
+                .padding(.bottom)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        isInWatchlist.toggle()
+                    } label: {
+                        Image(systemName: isInWatchlist ? "film.circle.fill" : "film.circle")
+                            .foregroundColor(isInWatchlist ? .blue : .primary)
+                    }
                 }
             }
         }
-        .navigationTitle(content.isMovie ? viewModel.contentDetail?.title ?? "No Title" : viewModel.contentDetail?.name ?? "No Name")
-        .navigationBarItems(trailing:
-        Button(action: {
-            
-        }) { Image(systemName: "film.circle") }
-        )
+    }
+}
+
+extension ContentDetail {
+    var displayTitle: String {
+        title ?? name ?? "No Title"
+    }
+    
+    var displayDate: String {
+        if releaseDate != nil {
+            return releaseDateString
+        } else {
+            return startEndDate
+        }
     }
 }
 
