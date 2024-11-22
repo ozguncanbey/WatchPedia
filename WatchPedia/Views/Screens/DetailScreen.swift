@@ -9,12 +9,14 @@ import SwiftUI
 
 struct DetailScreen: View {
     @StateObject private var viewModel: DetailViewModel
-    @State private var isInWatchlist = false
+    private let userDefault = UserDefaultsManager.shared
+    @State private var isInWatchlist: Bool
     let content: ContentResult
     
     init(content: ContentResult) {
         self.content = content
         _viewModel = StateObject(wrappedValue: DetailViewModel(contentId: content.id ?? 0, isMovie: content.isMovie))
+        isInWatchlist = userDefault.isInWatchlist(content)
     }
     
     var body: some View {
@@ -125,10 +127,13 @@ struct DetailScreen: View {
                 }
                 .padding(.bottom)
             }
+            .navigationTitle(content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
+                        isInWatchlist ? userDefault.removeWatchlist(content) :  userDefault.addWatchlist(content)
+                        
                         isInWatchlist.toggle()
                     } label: {
                         Image(systemName: isInWatchlist ? "film.circle.fill" : "film.circle")
