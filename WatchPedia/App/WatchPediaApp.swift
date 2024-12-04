@@ -11,7 +11,7 @@ import SwiftUI
 struct WatchPediaApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            LoginScreen()
                 .preferredColorScheme(.dark)
         }
     }
