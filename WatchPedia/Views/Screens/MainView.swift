@@ -29,7 +29,13 @@ struct MainView: View {
                 .tabItem {
                     Label("Watchlist", systemImage: "list.and.film")
                 }
+            
+            SettingsScreen()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
         }
+        .toolbar(.hidden, for: .automatic)
         .onAppear {
             UITabBar.appearance().unselectedItemTintColor = .gray
         }

@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseAuth
 
 struct CreateAccountScreen: View {
     
@@ -43,12 +44,14 @@ struct CreateAccountScreen: View {
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .disableAutocorrection(true)
+                        .keyboardType(.emailAddress)
                     
                     SecureField("Password", text: $password)
                         .padding()
                         .background(Color.white.opacity(0.1))
                         .cornerRadius(8)
                         .foregroundColor(.white)
+                        .privacySensitive(false)
                     
                     SecureField("Confirm Password", text: $confirmPassword)
                         .padding()
@@ -102,8 +105,14 @@ struct CreateAccountScreen: View {
     }
     
     private func createAccount() {
-        guard !username.isEmpty, !password.isEmpty, !confirmPassword.isEmpty else {
+        guard !username.isEmpty, !email.isEmpty, !password.isEmpty, !confirmPassword.isEmpty else {
             errorMessage = "Please fill in all fields"
+            showError = true
+            return
+        }
+        
+        guard password.count >= 6 else {
+            errorMessage = "Password must be at least 6 digits"
             showError = true
             return
         }
@@ -112,6 +121,15 @@ struct CreateAccountScreen: View {
             errorMessage = "Passwords do not match"
             showError = true
             return
+        }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if error != nil {
+                errorMessage = error?.localizedDescription ?? "Something wrong"
+                showError = true
+            } else {
+                dismiss()
+            }
         }
     }
 }

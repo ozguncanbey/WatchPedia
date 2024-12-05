@@ -37,7 +37,6 @@ struct DetailScreen: View {
                             HStack(spacing: 15) {
                                 if let rating = viewModel.contentDetail?.rating {
                                     Label(rating, systemImage: "star.fill")
-                                        .foregroundColor(.yellow)
                                 }
                                 
                                 Label(viewModel.contentDetail?.runtimeString ?? "",

@@ -1,14 +1,24 @@
 import SwiftUI
+import FirebaseAuth
 
 struct LoginScreen: View {
-    @State private var username = ""
+    @State private var email = ""
     @State private var password = ""
     @State private var isAdminSelected = false
     @State private var errorMessage = ""
     @State private var showError = false
     @State private var navigateToMainView = false
+    @State private var isLoggedIn = false
     
     var body: some View {
+        if isLoggedIn {
+            MainView()
+        } else {
+            content
+        }
+    }
+    
+    var content: some View {
         NavigationStack {
             ZStack {
                 LinearGradient(
@@ -27,19 +37,21 @@ struct LoginScreen: View {
                     CustomPicker(isAdminSelected: $isAdminSelected)
                     
                     VStack(spacing: 20) {
-                        TextField("Username", text: $username)
+                        TextField("Email", text: $email)
                             .padding()
                             .background(Color.white.opacity(0.1))
                             .cornerRadius(8)
                             .foregroundColor(.white)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
+                            .keyboardType(.emailAddress)
                         
                         SecureField("Password", text: $password)
                             .padding()
                             .background(Color.white.opacity(0.1))
                             .cornerRadius(8)
                             .foregroundColor(.white)
+                            .privacySensitive(false)
                     }
                     .padding(.horizontal)
                     
@@ -75,6 +87,9 @@ struct LoginScreen: View {
                             }
                         }
                     }
+                    .navigationDestination(isPresented: $navigateToMainView, destination: {
+                        MainView()
+                    })
                     .padding(.horizontal)
                     
                     Spacer()
@@ -82,16 +97,29 @@ struct LoginScreen: View {
                 .padding()
             }
         }
-        .navigationDestination(isPresented: $navigateToMainView) {
-            MainView()
+        .onAppear {
+            Auth.auth().addStateDidChangeListener { auth, user in
+                if user != nil {
+                    isLoggedIn = true
+                }
+            }
         }
     }
     
     private func login() {
-        guard !username.isEmpty, !password.isEmpty else {
+        guard !email.isEmpty, !password.isEmpty else {
             errorMessage = "Please fill in all fields"
             showError = true
             return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            if error != nil {
+                errorMessage = error?.localizedDescription ?? "Something wrong"
+                showError = true
+            } else {
+                navigateToMainView = true
+            }
         }
     }
 }
