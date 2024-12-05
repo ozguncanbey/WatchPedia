@@ -8,7 +8,9 @@ struct CreateAccountScreen: View {
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
-
+    @State private var errorMessage = ""
+    @State private var showError = false
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -59,6 +61,7 @@ struct CreateAccountScreen: View {
                 VStack(spacing: 15) {
                     Button(action: {
                         // Handle sign-up logic
+                        createAccount()
                     }) {
                         Text("Sign Up")
                             .fontWeight(.semibold)
@@ -69,13 +72,18 @@ struct CreateAccountScreen: View {
                             .cornerRadius(8)
                     }
                     
+                    if showError {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                    
                     HStack {
                         Text("Already have an account?")
                             .foregroundColor(.white)
                             .font(.footnote)
                         
                         Button(action: {
-                            // Ekrana geri dön
                             dismiss()
                         }) {
                             Text("Sign In")
@@ -90,6 +98,20 @@ struct CreateAccountScreen: View {
             }
             .toolbar(.hidden, for: .automatic)
             .padding()
+        }
+    }
+    
+    private func createAccount() {
+        guard !username.isEmpty, !password.isEmpty, !confirmPassword.isEmpty else {
+            errorMessage = "Please fill in all fields"
+            showError = true
+            return
+        }
+        
+        guard password == confirmPassword else {
+            errorMessage = "Passwords do not match"
+            showError = true
+            return
         }
     }
 }

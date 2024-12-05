@@ -4,7 +4,10 @@ struct LoginScreen: View {
     @State private var username = ""
     @State private var password = ""
     @State private var isAdminSelected = false
-
+    @State private var errorMessage = ""
+    @State private var showError = false
+    @State private var navigateToMainView = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -43,6 +46,7 @@ struct LoginScreen: View {
                     VStack(spacing: 15) {
                         Button(action: {
                             // Handle login logic
+                            login()
                         }) {
                             Text("Sign In")
                                 .fontWeight(.semibold)
@@ -51,6 +55,12 @@ struct LoginScreen: View {
                                 .frame(maxWidth: .infinity)
                                 .background(Color.white)
                                 .cornerRadius(8)
+                        }
+                        
+                        if showError {
+                            Text(errorMessage)
+                                .foregroundColor(.red)
+                                .font(.caption)
                         }
                         
                         HStack {
@@ -71,6 +81,17 @@ struct LoginScreen: View {
                 }
                 .padding()
             }
+        }
+        .navigationDestination(isPresented: $navigateToMainView) {
+            MainView()
+        }
+    }
+    
+    private func login() {
+        guard !username.isEmpty, !password.isEmpty else {
+            errorMessage = "Please fill in all fields"
+            showError = true
+            return
         }
     }
 }
