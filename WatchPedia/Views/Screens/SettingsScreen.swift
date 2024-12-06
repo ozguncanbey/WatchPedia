@@ -10,26 +10,16 @@ import FirebaseAuth
 
 struct SettingsScreen: View {
     
-    @Environment(\.dismiss) var dismiss
-    @State private var isLoggedOut = false
+    @Binding var isCurrentUserExists: Bool
     
     var body: some View {
         NavigationStack {
             Button("Log Out") {
                 do {
                     try Auth.auth().signOut()
-                    isLoggedOut = true
+                    isCurrentUserExists = false
                 } catch {
                     print(error.localizedDescription)
-                }
-            }
-            
-            if isLoggedOut {
-                NavigationLink(value: isLoggedOut) {
-                    LoginScreen()
-                }
-                .onAppear {
-                    dismiss()
                 }
             }
         }
@@ -37,6 +27,6 @@ struct SettingsScreen: View {
 }
 
 #Preview {
-    SettingsScreen()
+    SettingsScreen(isCurrentUserExists: .constant(false))
         .preferredColorScheme(.dark)
 }

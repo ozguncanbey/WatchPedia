@@ -1,5 +1,6 @@
 import SwiftUI
 import FirebaseAuth
+import FirebaseFirestore
 
 struct CreateAccountScreen: View {
     
@@ -51,7 +52,6 @@ struct CreateAccountScreen: View {
                         .background(Color.white.opacity(0.1))
                         .cornerRadius(8)
                         .foregroundColor(.white)
-                        .privacySensitive(false)
                     
                     SecureField("Confirm Password", text: $confirmPassword)
                         .padding()
@@ -128,7 +128,19 @@ struct CreateAccountScreen: View {
                 errorMessage = error?.localizedDescription ?? "Something wrong"
                 showError = true
             } else {
+                storeUserInformations()
                 dismiss()
+            }
+        }
+    }
+    
+    private func storeUserInformations() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let userData = ["username" : username, "email" : email, "password" : password, "isAdmin" : false, "uid" : uid] as [String : Any]
+        Firestore.firestore().collection("users").document(uid).setData(userData) { error in
+            if let error = error {
+                errorMessage = error.localizedDescription
+                showError = true
             }
         }
     }

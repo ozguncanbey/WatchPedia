@@ -8,7 +8,18 @@
 import SwiftUI
 
 struct MainView: View {
+    
+    @State private var isCurrentUserExists = false
+    
     var body: some View {
+        if isCurrentUserExists {
+            content
+        } else {
+            LoginScreen(isCurrentUserExists: $isCurrentUserExists)
+        }
+    }
+    
+    var content: some View {
         TabView {
             MoviesScreen()
                 .tabItem {
@@ -30,7 +41,7 @@ struct MainView: View {
                     Label("Watchlist", systemImage: "list.and.film")
                 }
             
-            SettingsScreen()
+            SettingsScreen(isCurrentUserExists: $isCurrentUserExists)
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }

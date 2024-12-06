@@ -7,18 +7,10 @@ struct LoginScreen: View {
     @State private var isAdminSelected = false
     @State private var errorMessage = ""
     @State private var showError = false
-    @State private var navigateToMainView = false
-    @State private var isLoggedIn = false
+    
+    @Binding var isCurrentUserExists: Bool
     
     var body: some View {
-        if isLoggedIn {
-            MainView()
-        } else {
-            content
-        }
-    }
-    
-    var content: some View {
         NavigationStack {
             ZStack {
                 LinearGradient(
@@ -87,21 +79,11 @@ struct LoginScreen: View {
                             }
                         }
                     }
-                    .navigationDestination(isPresented: $navigateToMainView, destination: {
-                        MainView()
-                    })
                     .padding(.horizontal)
                     
                     Spacer()
                 }
                 .padding()
-            }
-        }
-        .onAppear {
-            Auth.auth().addStateDidChangeListener { auth, user in
-                if user != nil {
-                    isLoggedIn = true
-                }
             }
         }
     }
@@ -118,7 +100,7 @@ struct LoginScreen: View {
                 errorMessage = error?.localizedDescription ?? "Something wrong"
                 showError = true
             } else {
-                navigateToMainView = true
+                isCurrentUserExists = true
             }
         }
     }
@@ -126,7 +108,7 @@ struct LoginScreen: View {
 
 struct LoginScreen_Previews: PreviewProvider {
     static var previews: some View {
-        LoginScreen()
+        LoginScreen(isCurrentUserExists: .constant(false))
             .preferredColorScheme(.dark)
     }
 }

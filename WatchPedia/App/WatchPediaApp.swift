@@ -24,7 +24,7 @@ struct WatchPediaApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginScreen()
+            MainView()
                 .preferredColorScheme(.dark)
         }
     }
