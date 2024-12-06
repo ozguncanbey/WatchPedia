@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct DetailScreen: View {
+    
     @StateObject private var viewModel: DetailViewModel
     private let userDefault = UserDefaultsManager.shared
+    
+    @State private var navigateToChatScreen = false
     @State private var isInWatchlist: Bool
+    
     let content: ContentResult
     
     init(content: ContentResult) {
@@ -129,6 +133,15 @@ struct DetailScreen: View {
             .navigationTitle(content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem {
+                    Button {
+                        navigateToChatScreen = true
+                    } label: {
+                        Image(systemName: "pencil")
+                            .foregroundColor(.primary)
+                    }
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         isInWatchlist ? userDefault.removeWatchlist(content) :  userDefault.addWatchlist(content)
@@ -139,6 +152,9 @@ struct DetailScreen: View {
                             .foregroundColor(isInWatchlist ? .blue : .primary)
                     }
                 }
+            }
+            .navigationDestination(isPresented: $navigateToChatScreen) {
+                ChatScreen(contentTitle: content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
             }
         }
     }
