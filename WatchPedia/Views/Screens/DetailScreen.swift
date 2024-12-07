@@ -138,7 +138,6 @@ struct DetailScreen: View {
                         navigateToChatScreen = true
                     } label: {
                         Image(systemName: "pencil")
-                            .foregroundColor(.primary)
                     }
                 }
                 
