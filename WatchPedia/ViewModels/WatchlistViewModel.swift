@@ -11,6 +11,7 @@ final class WatchlistViewModel: ObservableObject {
     
     @Published var watchlistedContents: [ContentResult]? = []
     private let userDefault = UserDefaultsManager.shared
+    private let watchlistManager = WatchlistManager.shared
     
     func getWatchlistedContents() {
         watchlistedContents = userDefault.getWatchlisteds()

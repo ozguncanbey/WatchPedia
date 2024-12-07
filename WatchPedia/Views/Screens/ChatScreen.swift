@@ -8,14 +8,14 @@ struct ChatScreen: View {
     @State private var messages: [ChatMessage] = []
     @State private var newMessage: String = ""
     @State private var currentUser: String = ""
-    @State private var isAdmin: Bool = false
+    @State private var isAdmin: Bool = true
     
     private let db = Firestore.firestore()
     
     var body: some View {
         NavigationStack {
             VStack {
-                MessagesList(messages: messages)
+                MessagesList(messages: messages, isAdmin: isAdmin)
                 MessageInputField(
                     newMessage: $newMessage,
                     onSend: sendMessage

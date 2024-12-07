@@ -1,25 +1,27 @@
-//
-//  MessageBubble.swift
-//  WatchPedia
-//
-//  Created by Özgün Can Beydili on 7.12.2024.
-//
-
-
 import SwiftUI
 
 struct MessageBubble: View {
     let message: ChatMessage
     let isCurrentUser: Bool
+    let isAdmin: Bool // Yeni eklenen özellik
     
     var body: some View {
         HStack {
             if isCurrentUser {
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text("You")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    HStack {
+                        Text("You")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        
+                        if isAdmin {
+                            Text("(admin)")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    
                     Text(message.message)
                         .padding()
                         .background(Color.blue.opacity(0.7))
@@ -28,9 +30,18 @@ struct MessageBubble: View {
                 }
             } else {
                 VStack(alignment: .leading) {
-                    Text(message.username)
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    HStack {
+                        Text(message.username)
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        
+                        if isAdmin {
+                            Text("(admin)")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    
                     Text(message.message)
                         .padding()
                         .background(Color.gray.opacity(0.3))
