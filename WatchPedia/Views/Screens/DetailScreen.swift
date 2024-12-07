@@ -1,33 +1,23 @@
-//
-//  DetailScreen.swift
-//  WatchPedia
-//
-//  Created by Özgün Can Beydili on 11.10.2024.
-//
-
 import SwiftUI
 
 struct DetailScreen: View {
-    
     @StateObject private var viewModel: DetailViewModel
-    private let userDefault = UserDefaultsManager.shared
+    @State private var watchlistManager = WatchlistManager.shared
     
     @State private var navigateToChatScreen = false
-    @State private var isInWatchlist: Bool
+    @State private var isInWatchlist: Bool = false
     
     let content: ContentResult
     
     init(content: ContentResult) {
         self.content = content
         _viewModel = StateObject(wrappedValue: DetailViewModel(contentId: content.id ?? 0, isMovie: content.isMovie))
-        isInWatchlist = userDefault.isInWatchlist(content)
     }
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    
                     HStack(alignment: .top, spacing: 15) {
                         PosterView(content: content)
                             .shadow(radius: 5)
@@ -106,7 +96,6 @@ struct DetailScreen: View {
                                 .padding(.horizontal)
                             }
                         }
-                        
                     }
                     
                     if let contentCast = viewModel.contentCast {
@@ -132,6 +121,11 @@ struct DetailScreen: View {
             }
             .navigationTitle(content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                watchlistManager.isInWatchlist(contentId: content.id ?? 0) { isInList in
+                    isInWatchlist = isInList
+                }
+            }
             .toolbar {
                 ToolbarItem {
                     Button {
@@ -143,8 +137,11 @@ struct DetailScreen: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        isInWatchlist ? userDefault.removeWatchlist(content) :  userDefault.addWatchlist(content)
-                        
+                        if isInWatchlist {
+                            watchlistManager.removeFromWatchlist(contentId: content.id ?? 0)
+                        } else {
+                            watchlistManager.addToWatchlist(contentId: content.id ?? 0)
+                        }
                         isInWatchlist.toggle()
                     } label: {
                         Image(systemName: isInWatchlist ? "film.circle.fill" : "film.circle")

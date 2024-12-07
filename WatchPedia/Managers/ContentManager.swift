@@ -7,70 +7,84 @@
 
 import Foundation
 
-enum ContentType {
-    case movie
-    case tv
-}
-
 final class ContentManager {
     static let shared = ContentManager()
     private let webService = WebService()
     
     private init() {}
     
-    func fetchContentDetails(id: Int, contentType: ContentType, completion: @escaping (ContentResult?) -> Void) {
-        switch contentType {
-        case .movie:
-            webService.downloadMovieDetail(id: id) { detail in
-                // ContentDetail'ı ContentResult'a dönüştür
-                if let detail = detail {
-                    let content = ContentResult(
-                        id: detail.id,
-                        overview: detail.overview ?? "",
-                        posterPath: detail.posterPath ?? "",
-                        releaseDate: detail.releaseDate ?? "",
-                        title: detail.title ?? "",
-                        name: detail.name ?? "",
-                        voteAverage: detail.voteAverage ?? 0.0
-                    )
-                    completion(content)
-                } else {
-                    completion(nil)
-                }
+    // Fetch movie details by ID
+    func fetchMovieDetails(id: Int, completion: @escaping (ContentResult?) -> Void) {
+        webService.downloadMovieDetail(id: id) { detail in
+            guard let detail = detail else {
+                completion(nil)
+                return
             }
-        case .tv:
-            webService.downloadShowDetail(id: id) { detail in
-                // ContentDetail'ı ContentResult'a dönüştür
-                if let detail = detail {
-                    let content = ContentResult(
-                        id: detail.id,
-                        overview: detail.overview ?? "",
-                        posterPath: detail.posterPath ?? "",
-                        releaseDate: detail.releaseDate ?? "",
-                        title: detail.title ?? "",
-                        name: detail.name ?? "",
-                        voteAverage: detail.voteAverage ?? 0.0
-                    )
-                    completion(content)
-                } else {
-                    completion(nil)
-                }
-            }
+            
+            let content = ContentResult(
+                id: detail.id,
+                overview: detail.overview,
+                posterPath: detail.posterPath,
+                releaseDate: detail.releaseDate,
+                title: detail.title,
+                name: nil,
+                voteAverage: detail.voteAverage
+            )
+            completion(content)
         }
     }
     
-    func fetchMultipleContentDetails(ids: [Int], contentType: ContentType, completion: @escaping ([ContentResult]) -> Void) {
+    // Fetch show details by ID
+    func fetchShowDetails(id: Int, completion: @escaping (ContentResult?) -> Void) {
+        webService.downloadShowDetail(id: id) { detail in
+            guard let detail = detail else {
+                completion(nil)
+                return
+            }
+            
+            let content = ContentResult(
+                id: detail.id,
+                overview: detail.overview,
+                posterPath: detail.posterPath,
+                releaseDate: detail.releaseDate,
+                title: nil,
+                name: detail.name,
+                voteAverage: detail.voteAverage
+            )
+            completion(content)
+        }
+    }
+    
+    // Fetch details for multiple IDs, determining if they are movies or shows
+    func fetchMultipleContentDetails(ids: [Int], completion: @escaping ([ContentResult]) -> Void) {
         var contents: [ContentResult] = []
         let group = DispatchGroup()
         
         for id in ids {
             group.enter()
-            fetchContentDetails(id: id, contentType: contentType) { content in
-                if let content = content {
-                    contents.append(content)
-                }
-                group.leave()
-            }
+            
+//            webService.downloadContentDetail(id: id) { detail in
+//                guard let detail = detail else {
+//                    group.leave()
+//                    return
+//                }
+//                
+//                if detail.isMovie {
+//                    self.fetchMovieDetails(id: id) { content in
+//                        if let content = content {
+//                            contents.append(content)
+//                        }
+//                        group.leave()
+//                    }
+//                } else {
+//                    self.fetchShowDetails(id: id) { content in
+//                        if let content = content {
+//                            contents.append(content)
+//                        }
+//                        group.leave()
+//                    }
+//                }
+//            }
         }
         
         group.notify(queue: .main) {
