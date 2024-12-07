@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessage: Identifiable {
+struct ChatMessage: Identifiable, Codable, Equatable {
     var id: String
     var username: String
     var message: String

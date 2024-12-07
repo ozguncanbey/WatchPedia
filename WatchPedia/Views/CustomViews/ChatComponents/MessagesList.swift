@@ -24,11 +24,11 @@ struct MessagesList: View {
                         .id(message.id)
                     }
                 }
-//                .onChange(of: messages) { _ in
-//                    if let lastMessage = messages.last {
-//                        proxy.scrollTo(lastMessage.id, anchor: .bottom)
-//                    }
-//                }
+                .onChange(of: messages) {
+                    if let lastMessage = messages.last {
+                        proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                    }
+                }
             }
         }
     }
