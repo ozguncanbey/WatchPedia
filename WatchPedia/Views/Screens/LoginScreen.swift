@@ -4,7 +4,6 @@ import FirebaseAuth
 struct LoginScreen: View {
     @State private var email = ""
     @State private var password = ""
-    @State private var isAdminSelected = false
     @State private var errorMessage = ""
     @State private var showError = false
     
@@ -25,8 +24,6 @@ struct LoginScreen: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-                    
-                    CustomPicker(isAdminSelected: $isAdminSelected)
                     
                     VStack(spacing: 20) {
                         TextField("Email", text: $email)

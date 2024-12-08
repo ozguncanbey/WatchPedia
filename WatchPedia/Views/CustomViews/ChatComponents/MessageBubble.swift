@@ -3,7 +3,6 @@ import SwiftUI
 struct MessageBubble: View {
     let message: ChatMessage
     let isCurrentUser: Bool
-    let isAdmin: Bool // Yeni eklenen özellik
     
     var body: some View {
         HStack {
@@ -15,18 +14,20 @@ struct MessageBubble: View {
                             .font(.caption)
                             .foregroundColor(.gray)
                         
-                        if isAdmin {
-                            Text("(admin)")
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                        if message.isAdmin {
+                            Image(systemName: "crown.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 12, height: 12)
+                                .foregroundColor(.yellow)
                         }
                     }
                     
                     Text(message.message)
                         .padding()
-                        .background(Color.blue.opacity(0.7))
+                        .background(message.isAdmin ? Color.yellow.opacity(0.8) : Color.blue.opacity(0.7))
                         .cornerRadius(12)
-                        .foregroundColor(.white)
+                        .foregroundColor(message.isAdmin ? .black : .white)
                 }
             } else {
                 VStack(alignment: .leading) {
@@ -35,18 +36,20 @@ struct MessageBubble: View {
                             .font(.caption)
                             .foregroundColor(.gray)
                         
-                        if isAdmin {
-                            Text("(admin)")
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                        if message.isAdmin {
+                            Image(systemName: "crown.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 12, height: 12)
+                                .foregroundColor(.yellow)
                         }
                     }
                     
                     Text(message.message)
                         .padding()
-                        .background(Color.gray.opacity(0.3))
+                        .background(message.isAdmin ? Color.yellow.opacity(0.8) : Color.gray.opacity(0.3))
                         .cornerRadius(12)
-                        .foregroundColor(.white)
+                        .foregroundColor(message.isAdmin ? .black : .white)
                 }
                 Spacer()
             }

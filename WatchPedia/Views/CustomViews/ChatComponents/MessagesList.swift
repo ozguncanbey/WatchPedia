@@ -11,7 +11,6 @@ import FirebaseAuth
 
 struct MessagesList: View {
     let messages: [ChatMessage]
-    let isAdmin: Bool
     
     var body: some View {
         ScrollView {
@@ -20,8 +19,7 @@ struct MessagesList: View {
                     ForEach(messages) { message in
                         MessageBubble(
                             message: message,
-                            isCurrentUser: message.senderId == Auth.auth().currentUser?.uid,
-                            isAdmin: isAdmin
+                            isCurrentUser: message.senderId == Auth.auth().currentUser?.uid
                         )
                         .id(message.id)
                     }

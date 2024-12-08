@@ -8,14 +8,14 @@ struct ChatScreen: View {
     @State private var messages: [ChatMessage] = []
     @State private var newMessage: String = ""
     @State private var currentUser: String = ""
-    @State private var isAdmin: Bool = true
+    @State private var isAdmin: Bool = false
     
     private let db = Firestore.firestore()
     
     var body: some View {
         NavigationStack {
             VStack {
-                MessagesList(messages: messages, isAdmin: isAdmin)
+                MessagesList(messages: messages)
                 MessageInputField(
                     newMessage: $newMessage,
                     onSend: sendMessage
@@ -24,7 +24,10 @@ struct ChatScreen: View {
             .background(Color.black.ignoresSafeArea())
             .navigationTitle(contentTitle)
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear(perform: loadChat)
+            .onAppear {
+                loadChat()
+                fetchAdminStatus()
+            }
         }
     }
     
@@ -76,7 +79,7 @@ struct ChatScreen: View {
             "senderId": uid,
             "timestamp": FieldValue.serverTimestamp()
         ]
-
+        
         db.collection("chats")
             .document(contentTitle)
             .collection("messages")
@@ -87,6 +90,21 @@ struct ChatScreen: View {
                     newMessage = ""
                 }
             }
+    }
+    
+    private func fetchAdminStatus() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        db.collection("users").document(userId).getDocument { document, error in
+            if let error = error {
+                print("Error fetching user data: \(error.localizedDescription)")
+                return
+            }
+            
+            if let document = document, let data = document.data() {
+                self.isAdmin = data["isAdmin"] as? Bool ?? false
+            }
+        }
     }
 }
 
