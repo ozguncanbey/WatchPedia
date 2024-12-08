@@ -15,146 +15,145 @@ struct DetailScreen: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    HStack(alignment: .top, spacing: 15) {
-                        PosterView(content: content)
-                            .shadow(radius: 5)
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(viewModel.contentDetail?.displayTitle ?? "")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .lineLimit(2)
-                            
-                            HStack(spacing: 15) {
-                                if let rating = viewModel.contentDetail?.rating {
-                                    Label(rating, systemImage: "star.fill")
-                                }
-                                
-                                Label(viewModel.contentDetail?.runtimeString ?? "",
-                                      systemImage: "clock")
-                            }
-                            .font(.subheadline)
-                            
-                            Label(viewModel.contentDetail?.displayDate ?? "",
-                                  systemImage: "calendar")
-                            .font(.subheadline)
-                            
-                            if !content.isMovie {
-                                Label(viewModel.contentDetail?.season ?? "",
-                                      systemImage: "tv")
-                                .font(.subheadline)
-                            }
-                            
-                            Text(viewModel.contentDetail?.genresString ?? "")
-                                .font(.caption)
-                                .padding(.vertical, 4)
-                                .padding(.horizontal, 8)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(5)
-                        }
-                    }
-                    .padding()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                HStack(alignment: .top, spacing: 15) {
+                    PosterView(content: content)
+                        .shadow(radius: 5)
                     
-                    // Overview
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Overview")
-                            .font(.title3)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(viewModel.contentDetail?.displayTitle ?? "")
+                            .font(.title2)
                             .fontWeight(.bold)
+                            .lineLimit(2)
                         
-                        Text(viewModel.contentDetail?.overview ?? "")
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .lineSpacing(4)
-                    }
-                    .padding(.horizontal)
-                    
-                    if let videos = viewModel.contentVideoResult, !videos.isEmpty {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Videos")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .padding(.horizontal)
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 15) {
-                                    ForEach(videos, id: \.key) { video in
-                                        if video.type?.lowercased() == "trailer" {
-                                            VStack(alignment: .leading) {
-                                                TrailerView(videoKey: video.key ?? "")
-                                                    .frame(width: 280)
-                                                
-                                                Text("Trailer")
-                                                    .font(.caption)
-                                                    .foregroundColor(.secondary)
-                                            }
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal)
+                        HStack(spacing: 15) {
+                            if let rating = viewModel.contentDetail?.rating {
+                                Label(rating, systemImage: "star.fill")
                             }
-                        }
-                    }
-                    
-                    if let contentCast = viewModel.contentCast {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Cast")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .padding(.horizontal)
                             
-                            CastSection(castList: contentCast)
+                            Label(viewModel.contentDetail?.runtimeString ?? "",
+                                  systemImage: "clock")
                         }
+                        .font(.subheadline)
+                        
+                        Label(viewModel.contentDetail?.displayDate ?? "",
+                              systemImage: "calendar")
+                        .font(.subheadline)
+                        
+                        if !content.isMovie {
+                            Label(viewModel.contentDetail?.season ?? "",
+                                  systemImage: "tv")
+                            .font(.subheadline)
+                        }
+                        
+                        Text(viewModel.contentDetail?.genresString ?? "")
+                            .font(.caption)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(5)
                     }
+                }
+                .padding()
+                
+                // Overview
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Overview")
+                        .font(.title3)
+                        .fontWeight(.bold)
                     
-                    if let similarContents = viewModel.similarContents {
-                        Text(content.isMovie ? "Similar Movies" : "Similar Shows")
+                    Text(viewModel.contentDetail?.overview ?? "")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .lineSpacing(4)
+                }
+                .padding(.horizontal)
+                
+                if let videos = viewModel.contentVideoResult, !videos.isEmpty {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Videos")
                             .font(.title3)
                             .fontWeight(.bold)
                             .padding(.horizontal)
-                        ContentSection(title: "", contents: similarContents)
-                    }
-                }
-                .padding(.bottom)
-            }
-            .navigationTitle(content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                watchlistManager.isInWatchlist(contentId: content.id ?? 0) { isInList in
-                    isInWatchlist = isInList
-                }
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        navigateToChatScreen = true
-                    } label: {
-                        Image(systemName: "pencil")
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 15) {
+                                ForEach(videos, id: \.key) { video in
+                                    if video.type?.lowercased() == "trailer" {
+                                        VStack(alignment: .leading) {
+                                            TrailerView(videoKey: video.key ?? "")
+                                                .frame(width: 280)
+                                            
+                                            Text("Trailer")
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
                     }
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        if isInWatchlist {
-                            watchlistManager.removeFromWatchlist(contentId: content.id ?? 0)
-                        } else {
-                            watchlistManager.addToWatchlist(contentId: content.id ?? 0)
-                        }
-                        isInWatchlist.toggle()
-                    } label: {
-                        Image(systemName: isInWatchlist ? "film.circle.fill" : "film.circle")
-                            .foregroundColor(isInWatchlist ? .blue : .primary)
+                if let contentCast = viewModel.contentCast {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Cast")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.horizontal)
+                        
+                        CastSection(castList: contentCast)
                     }
                 }
+                
+                if let similarContents = viewModel.similarContents {
+                    Text(content.isMovie ? "Similar Movies" : "Similar Shows")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .padding(.horizontal)
+                    ContentSection(title: "", contents: similarContents)
+                }
             }
-            .navigationDestination(isPresented: $navigateToChatScreen) {
-                ChatScreen(contentTitle: content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
+            .padding(.bottom)
+        }
+        .navigationTitle(content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            watchlistManager.isInWatchlist(contentId: content.id ?? 0) { isInList in
+                isInWatchlist = isInList
             }
+        }
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    navigateToChatScreen = true
+                } label: {
+                    Image(systemName: "pencil")
+                }
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    if isInWatchlist {
+                        watchlistManager.removeFromWatchlist(contentId: content.id ?? 0)
+                    } else {
+                        watchlistManager.addToWatchlist(contentId: content.id ?? 0)
+                    }
+                    isInWatchlist.toggle()
+                } label: {
+                    Image(systemName: isInWatchlist ? "film.circle.fill" : "film.circle")
+                        .foregroundColor(isInWatchlist ? .blue : .primary)
+                }
+            }
+        }
+        .navigationDestination(isPresented: $navigateToChatScreen) {
+            ChatScreen(contentTitle: content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
         }
     }
 }
+
 
 extension ContentDetail {
     var displayTitle: String {
