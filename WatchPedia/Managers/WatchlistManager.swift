@@ -1,11 +1,3 @@
-//
-//  WatchlistManager.swift
-//  WatchPedia
-//
-//  Created by Özgün Can Beydili on 7.12.2024.
-//
-
-
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
@@ -18,56 +10,76 @@ final class WatchlistManager {
     private let db = Firestore.firestore()
     private let userId = Auth.auth().currentUser?.uid ?? "defaultUserId"
     
-    func addToWatchlist(contentId: Int) {
-            let watchlistRef = db.collection("users").document(userId).collection("watchlist")
-            
-            watchlistRef.document("\(contentId)").setData([
-                "contentId": contentId
-            ]) { error in
-                if let error = error {
-                    print("Error adding to watchlist: \(error.localizedDescription)")
-                } else {
-                    print("Content added to watchlist successfully")
-                }
-            }
-        }
+    // Add content to the appropriate watchlist (movies or shows)
+    func addToWatchlist(contentId: Int, isMovie: Bool) {
+        let collectionName = isMovie ? "movies" : "shows"
+        let watchlistRef = db.collection("users").document(userId).collection("watchlist").document(collectionName)
         
-        func removeFromWatchlist(contentId: Int) {
-            let watchlistRef = db.collection("users").document(userId).collection("watchlist")
-            
-            watchlistRef.document("\(contentId)").delete() { error in
-                if let error = error {
-                    print("Error removing from watchlist: \(error.localizedDescription)")
-                } else {
-                    print("Content removed from watchlist successfully")
-                }
+        watchlistRef.collection("contents").document("\(contentId)").setData([
+            "contentId": contentId
+        ]) { error in
+            if let error = error {
+                print("Error adding to \(collectionName) watchlist: \(error.localizedDescription)")
+            } else {
+                print("Content added to \(collectionName) watchlist successfully")
             }
         }
+    }
+    
+    // Remove content from the appropriate watchlist (movies or shows)
+    func removeFromWatchlist(contentId: Int, isMovie: Bool) {
+        let collectionName = isMovie ? "movies" : "shows"
+        let watchlistRef = db.collection("users").document(userId).collection("watchlist").document(collectionName)
         
-        func isInWatchlist(contentId: Int, completion: @escaping (Bool) -> Void) {
-            let watchlistRef = db.collection("users").document(userId).collection("watchlist")
-            
-            watchlistRef.document("\(contentId)").getDocument { document, error in
-                if let error = error {
-                    print("Error checking watchlist: \(error.localizedDescription)")
-                    completion(false)
-                } else {
-                    completion(document?.exists ?? false)
-                }
+        watchlistRef.collection("contents").document("\(contentId)").delete { error in
+            if let error = error {
+                print("Error removing from \(collectionName) watchlist: \(error.localizedDescription)")
+            } else {
+                print("Content removed from \(collectionName) watchlist successfully")
             }
         }
+    }
+    
+    // Check if content is in the appropriate watchlist (movies or shows)
+    func isInWatchlist(contentId: Int, isMovie: Bool, completion: @escaping (Bool) -> Void) {
+        let collectionName = isMovie ? "movies" : "shows"
+        let watchlistRef = db.collection("users").document(userId).collection("watchlist").document(collectionName)
         
-        func getWatchlist(completion: @escaping ([Int]) -> Void) {
-            let watchlistRef = db.collection("users").document(userId).collection("watchlist")
-            
-            watchlistRef.getDocuments { snapshot, error in
-                if let error = error {
-                    print("Error fetching watchlist: \(error.localizedDescription)")
-                    completion([])
-                } else {
-                    let contentIds = snapshot?.documents.compactMap { $0.data()["contentId"] as? Int } ?? []
-                    completion(contentIds)
-                }
+        watchlistRef.collection("contents").document("\(contentId)").getDocument { document, error in
+            if let error = error {
+                print("Error checking \(collectionName) watchlist: \(error.localizedDescription)")
+                completion(false)
+            } else {
+                completion(document?.exists ?? false)
             }
         }
+    }
+    
+    func getMovieWatchlist(completion: @escaping ([Int]) -> Void) {
+        let moviesRef = db.collection("users").document(userId).collection("watchlist").document("movies").collection("contents")
+        
+        moviesRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching movies watchlist: \(error.localizedDescription)")
+                completion([])
+            } else {
+                let movieIds = snapshot?.documents.compactMap { $0.data()["contentId"] as? Int } ?? []
+                completion(movieIds)
+            }
+        }
+    }
+
+    func getShowWatchlist(completion: @escaping ([Int]) -> Void) {
+        let showsRef = db.collection("users").document(userId).collection("watchlist").document("shows").collection("contents")
+        
+        showsRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching shows watchlist: \(error.localizedDescription)")
+                completion([])
+            } else {
+                let showIds = snapshot?.documents.compactMap { $0.data()["contentId"] as? Int } ?? []
+                completion(showIds)
+            }
+        }
+    }
 }

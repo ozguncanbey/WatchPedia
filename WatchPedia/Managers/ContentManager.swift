@@ -8,6 +8,7 @@
 import Foundation
 
 final class ContentManager {
+    
     static let shared = ContentManager()
     private let webService = WebService()
     
@@ -52,43 +53,6 @@ final class ContentManager {
                 voteAverage: detail.voteAverage
             )
             completion(content)
-        }
-    }
-    
-    // Fetch details for multiple IDs, determining if they are movies or shows
-    func fetchMultipleContentDetails(ids: [Int], completion: @escaping ([ContentResult]) -> Void) {
-        var contents: [ContentResult] = []
-        let group = DispatchGroup()
-        
-        for id in ids {
-            group.enter()
-            
-//            webService.downloadContentDetail(id: id) { detail in
-//                guard let detail = detail else {
-//                    group.leave()
-//                    return
-//                }
-//                
-//                if detail.isMovie {
-//                    self.fetchMovieDetails(id: id) { content in
-//                        if let content = content {
-//                            contents.append(content)
-//                        }
-//                        group.leave()
-//                    }
-//                } else {
-//                    self.fetchShowDetails(id: id) { content in
-//                        if let content = content {
-//                            contents.append(content)
-//                        }
-//                        group.leave()
-//                    }
-//                }
-//            }
-        }
-        
-        group.notify(queue: .main) {
-            completion(contents)
         }
     }
 }

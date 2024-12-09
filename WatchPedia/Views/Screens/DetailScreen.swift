@@ -121,7 +121,7 @@ struct DetailScreen: View {
         .navigationTitle(content.isMovie ? content.title ?? "No Title" : content.name ?? "No Name")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            watchlistManager.isInWatchlist(contentId: content.id ?? 0) { isInList in
+            watchlistManager.isInWatchlist(contentId: content.id ?? 0, isMovie: content.isMovie) { isInList in
                 isInWatchlist = isInList
             }
         }
@@ -137,9 +137,9 @@ struct DetailScreen: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     if isInWatchlist {
-                        watchlistManager.removeFromWatchlist(contentId: content.id ?? 0)
+                        watchlistManager.removeFromWatchlist(contentId: content.id ?? 0, isMovie: content.isMovie)
                     } else {
-                        watchlistManager.addToWatchlist(contentId: content.id ?? 0)
+                        watchlistManager.addToWatchlist(contentId: content.id ?? 0, isMovie: content.isMovie)
                     }
                     isInWatchlist.toggle()
                 } label: {

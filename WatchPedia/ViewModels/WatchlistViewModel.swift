@@ -1,10 +1,3 @@
-//
-//  WatchlistViewModel.swift
-//  WatchPedia
-//
-//  Created by Özgün Can Beydili on 10.10.2024.
-//
-
 import Foundation
 
 final class WatchlistViewModel: ObservableObject {
@@ -14,29 +7,50 @@ final class WatchlistViewModel: ObservableObject {
     private let contentManager = ContentManager.shared
     
     func getWatchlistedContents() {
-        watchlistManager.getWatchlist { [weak self] contentIds in
-            guard let self = self else { return }
-            
-            // contentIds ile içerikleri al
-            contentManager.fetchMultipleContentDetails(ids: contentIds) { contents in
-                DispatchQueue.main.async {
-                    self.watchlistedContents = contents
+        var fetchedContents: [ContentResult] = []
+        let group = DispatchGroup()
+        
+        // Fetch movies
+        group.enter()
+        watchlistManager.getMovieWatchlist { movieIds in
+            if movieIds.isEmpty {
+                print("No movies in watchlist")
+            } else {
+                for movieId in movieIds {
+                    group.enter()
+                    self.contentManager.fetchMovieDetails(id: movieId) { movieDetail in
+                        if let movieDetail = movieDetail {
+                            fetchedContents.append(movieDetail)
+                        }
+                        group.leave()
+                    }
                 }
             }
+            group.leave()
         }
-    }
-    
-    func addContentToWatchlist(contentId: Int) {
-        watchlistManager.addToWatchlist(contentId: contentId)
-        getWatchlistedContents()
-    }
-    
-    func removeContentFromWatchlist(contentId: Int) {
-        watchlistManager.removeFromWatchlist(contentId: contentId)
-        getWatchlistedContents()
-    }
-    
-    func isContentInWatchlist(contentId: Int, completion: @escaping (Bool) -> Void) {
-        watchlistManager.isInWatchlist(contentId: contentId, completion: completion)
+        
+        // Fetch shows
+        group.enter()
+        watchlistManager.getShowWatchlist { showIds in
+            if showIds.isEmpty {
+                print("No shows in watchlist")
+            } else {
+                for showId in showIds {
+                    group.enter()
+                    self.contentManager.fetchShowDetails(id: showId) { showDetail in
+                        if let showDetail = showDetail {
+                            fetchedContents.append(showDetail)
+                        }
+                        group.leave()
+                    }
+                }
+            }
+            group.leave()
+        }
+        
+        // Notify when all tasks are completed
+        group.notify(queue: .main) {
+            self.watchlistedContents = fetchedContents
+        }
     }
 }
