@@ -13,17 +13,13 @@ final class WatchlistViewModel: ObservableObject {
         // Fetch movies
         group.enter()
         watchlistManager.getMovieWatchlist { movieIds in
-            if movieIds.isEmpty {
-                print("No movies in watchlist")
-            } else {
-                for movieId in movieIds {
-                    group.enter()
-                    self.contentManager.fetchMovieDetails(id: movieId) { movieDetail in
-                        if let movieDetail = movieDetail {
-                            fetchedContents.append(movieDetail)
-                        }
-                        group.leave()
+            for movieId in movieIds {
+                group.enter()
+                self.contentManager.fetchMovieDetails(id: movieId) { movieDetail in
+                    if let movieDetail = movieDetail {
+                        fetchedContents.append(movieDetail)
                     }
+                    group.leave()
                 }
             }
             group.leave()
@@ -32,17 +28,13 @@ final class WatchlistViewModel: ObservableObject {
         // Fetch shows
         group.enter()
         watchlistManager.getShowWatchlist { showIds in
-            if showIds.isEmpty {
-                print("No shows in watchlist")
-            } else {
-                for showId in showIds {
-                    group.enter()
-                    self.contentManager.fetchShowDetails(id: showId) { showDetail in
-                        if let showDetail = showDetail {
-                            fetchedContents.append(showDetail)
-                        }
-                        group.leave()
+            for showId in showIds {
+                group.enter()
+                self.contentManager.fetchShowDetails(id: showId) { showDetail in
+                    if let showDetail = showDetail {
+                        fetchedContents.append(showDetail)
                     }
+                    group.leave()
                 }
             }
             group.leave()

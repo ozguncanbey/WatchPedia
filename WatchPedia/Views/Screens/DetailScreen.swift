@@ -144,7 +144,6 @@ struct DetailScreen: View {
                     isInWatchlist.toggle()
                 } label: {
                     Image(systemName: isInWatchlist ? "film.circle.fill" : "film.circle")
-                        .foregroundColor(isInWatchlist ? .blue : .primary)
                 }
             }
         }

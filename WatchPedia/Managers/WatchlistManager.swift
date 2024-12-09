@@ -20,8 +20,6 @@ final class WatchlistManager {
         ]) { error in
             if let error = error {
                 print("Error adding to \(collectionName) watchlist: \(error.localizedDescription)")
-            } else {
-                print("Content added to \(collectionName) watchlist successfully")
             }
         }
     }
@@ -34,8 +32,6 @@ final class WatchlistManager {
         watchlistRef.collection("contents").document("\(contentId)").delete { error in
             if let error = error {
                 print("Error removing from \(collectionName) watchlist: \(error.localizedDescription)")
-            } else {
-                print("Content removed from \(collectionName) watchlist successfully")
             }
         }
     }
