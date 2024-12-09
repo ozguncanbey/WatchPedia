@@ -8,7 +8,9 @@ final class WatchlistManager {
     private init() {}
     
     private let db = Firestore.firestore()
-    private let userId = Auth.auth().currentUser?.uid ?? "defaultUserId"
+    private var userId: String {
+        Auth.auth().currentUser?.uid ?? "defaultUserId"
+    }
     
     // Add content to the appropriate watchlist (movies or shows)
     func addToWatchlist(contentId: Int, isMovie: Bool) {
@@ -64,7 +66,7 @@ final class WatchlistManager {
             }
         }
     }
-
+    
     func getShowWatchlist(completion: @escaping ([Int]) -> Void) {
         let showsRef = db.collection("users").document(userId).collection("watchlist").document("shows").collection("contents")
         
