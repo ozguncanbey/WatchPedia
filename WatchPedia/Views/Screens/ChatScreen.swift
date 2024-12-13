@@ -15,7 +15,10 @@ struct ChatScreen: View {
     var body: some View {
         NavigationStack {
             VStack {
-                MessagesList(messages: messages)
+                MessagesList(
+                    messages: messages,
+                    onDeleteMessage: deleteMessage
+                )
                 MessageInputField(
                     newMessage: $newMessage,
                     onSend: sendMessage
@@ -90,6 +93,21 @@ struct ChatScreen: View {
                     newMessage = ""
                 }
             }
+    }
+    
+    private func deleteMessage(_ message: ChatMessage) {
+        guard let uid = Auth.auth().currentUser?.uid, message.senderId == uid else { return }
+        
+        let messageRef = db.collection("chats")
+            .document(contentTitle)
+            .collection("messages")
+            .document(message.id)
+        
+        messageRef.delete { error in
+            if let error = error {
+                print("Error deleting message: \(error.localizedDescription)")
+            }
+        }
     }
     
     private func fetchAdminStatus() {
