@@ -79,6 +79,11 @@ struct CreateAccountScreen: View {
                         Text(errorMessage)
                             .foregroundColor(.red)
                             .font(.caption)
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                    errorMessage = ""
+                                }
+                            }
                     }
                     
                     HStack {
