@@ -18,11 +18,10 @@ struct MessageBubble: View {
                 
                 VStack(alignment: isCurrentUser ? .trailing : .leading) {
                     HStack {
-                        if !isCurrentUser {
-                            Text(message.username)
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
+                        
+                        Text(message.username)
+                            .font(.caption)
+                            .foregroundColor(.gray)
                         
                         if message.isAdmin {
                             Image(systemName: "crown.fill")
