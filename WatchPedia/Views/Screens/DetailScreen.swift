@@ -125,6 +125,7 @@ struct DetailScreen: View {
                 isInWatchlist = isInList
             }
         }
+        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             ToolbarItem {
                 Button {
