@@ -17,23 +17,35 @@ WatchPedia is a movie and TV series discovery application that allows users to b
 
 ## Screenshots
 
-- ![Image](https://github.com/user-attachments/assets/060f0d97-b138-46dc-9cec-459fe4ba69c9)
-- 
-- ![Image](https://github.com/user-attachments/assets/0b89c40e-b460-4317-95f2-a627b6e8b4a4)
-- 
-- ![Image](https://github.com/user-attachments/assets/ce206427-2450-4861-b3af-51d0e3cddb9a)
-- 
-- ![Image](https://github.com/user-attachments/assets/a65a3d29-3246-4f68-9142-f99d098c748a)
-- 
-- ![Image](https://github.com/user-attachments/assets/1eae16ed-1af7-415f-be0a-95901ebea531)
-- 
-- ![Image](https://github.com/user-attachments/assets/f60cf9b3-0ff3-48b4-9882-7a3f6075907f)
-- 
-- ![Image](https://github.com/user-attachments/assets/9297c836-b0a6-4583-bc32-9a11d2bbf3b0)
-- 
-- ![Image](https://github.com/user-attachments/assets/9544e11a-ff4e-4720-8699-f1dea99a37fb)
-- 
-- ![Image](https://github.com/user-attachments/assets/ae38d7b2-a126-4ef8-9237-d80d14a85b4d)
+<p align="center">
+  <a href="https://github.com/user-attachments/assets/060f0d97-b138-46dc-9cec-459fe4ba69c9">
+    <img src="https://github.com/user-attachments/assets/060f0d97-b138-46dc-9cec-459fe4ba69c9" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/0b89c40e-b460-4317-95f2-a627b6e8b4a4">
+    <img src="https://github.com/user-attachments/assets/0b89c40e-b460-4317-95f2-a627b6e8b4a4" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/ce206427-2450-4861-b3af-51d0e3cddb9a">
+    <img src="https://github.com/user-attachments/assets/ce206427-2450-4861-b3af-51d0e3cddb9a" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/a65a3d29-3246-4f68-9142-f99d098c748a">
+    <img src="https://github.com/user-attachments/assets/a65a3d29-3246-4f68-9142-f99d098c748a" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/1eae16ed-1af7-415f-be0a-95901ebea531">
+    <img src="https://github.com/user-attachments/assets/1eae16ed-1af7-415f-be0a-95901ebea531" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/f60cf9b3-0ff3-48b4-9882-7a3f6075907f">
+    <img src="https://github.com/user-attachments/assets/f60cf9b3-0ff3-48b4-9882-7a3f6075907f" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/9297c836-b0a6-4583-bc32-9a11d2bbf3b0">
+    <img src="https://github.com/user-attachments/assets/9297c836-b0a6-4583-bc32-9a11d2bbf3b0" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/9544e11a-ff4e-4720-8699-f1dea99a37fb">
+    <img src="https://github.com/user-attachments/assets/9544e11a-ff4e-4720-8699-f1dea99a37fb" width="400">
+  </a>
+  <a href="https://github.com/user-attachments/assets/ae38d7b2-a126-4ef8-9237-d80d14a85b4d">
+    <img src="https://github.com/user-attachments/assets/ae38d7b2-a126-4ef8-9237-d80d14a85b4d" width="400">
+  </a>
+</p>
 
 ---
 
